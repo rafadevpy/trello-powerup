@@ -4,7 +4,7 @@
 
 Projeto em fase experimental, em testes para possível integração gradual ao fluxo operacional interno.
 
-# PDI Project Power-Up
+# PDI Project Power-Up for Trello
 
 Power-Up para Trello desenvolvido para centralizar e automatizar o acompanhamento de projetos do setor PDI, integrando leitura de dados locais com atualização estruturada de informações operacionais.
 
