@@ -1,27 +1,35 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_file
 import os
-from datetime import datetime
+import json
+import datetime
 
 app = Flask(__name__)
 
-# Pasta fixa inicial para teste
-PASTA_PROJETO = r"C:\Users\luis.rafael\Pasta-prejeto-trabalho"
+@app.after_request
+def add_ngrok_header(response):
+    response.headers['ngrok-skip-browser-warning'] = 'true'
+    return response
+
+@app.route('/manifest.json')
+def manifest():
+    return send_file('manifest.json')
 
 @app.route('/projeto', methods=['GET'])
 def analisar_projeto():
+    try:
+        with open('projeto_info.json', 'r', encoding='utf-8') as f:
+            dados = json.load(f)
+        return jsonify(dados)
+    except FileNotFoundError:
+        return jsonify({"erro": "projeto_info.json não encontrado. Execute o leitor-de-conteudo.py primeiro."}), 404
 
-    nome_projeto = os.path.basename(PASTA_PROJETO)
+@app.route('/projeto-pdi.html')
+def projeto_pdi():
+    return send_file('projeto-pdi.html')
 
-    timestamp = os.path.getctime(PASTA_PROJETO)
-    data_criacao = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
-
-    dados = {
-        "nome_projeto": nome_projeto,
-        "caminho": PASTA_PROJETO,
-        "data_criacao": data_criacao
-    }
-
-    return jsonify(dados)
+@app.route('/popup.html')
+def popup():
+    return send_file('popup.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

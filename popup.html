@@ -1,0 +1,17 @@
+<script>
+function buscarProjeto() {
+    const base = window.location.origin;
+    fetch(`${base}/projeto`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('resultado').innerHTML = `
+                <p><strong>Nome:</strong> ${data.nome_projeto}</p>
+                <p><strong>Caminho:</strong> ${data.caminho}</p>
+                <p><strong>Data:</strong> ${data.data_criacao}</p>
+            `;
+        })
+        .catch(err => {
+            document.getElementById('resultado').innerHTML = '<p style="color:red">Erro ao carregar dados.</p>';
+        });
+}
+</script>

@@ -1,0 +1,9 @@
+{
+  "name": "PDI Power-Up",
+  "details": "Power-Up de projetos PDI",
+  "author": "Luis Rafael",
+  "connector-url": "https://hyperexcursively-unspawned-ione.ngrok-free.dev/projeto-pdi.html",
+  "capabilities": [
+    "card-buttons"
+  ]
+}
