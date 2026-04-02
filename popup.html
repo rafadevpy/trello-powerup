@@ -4,29 +4,55 @@
 <meta charset="utf-8">
 <style>
   body { font-family: sans-serif; padding: 16px; margin: 0; }
-  button { background: #1a7a3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+  button { background: #1a7a3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-right: 8px; }
   p { font-size: 13px; margin: 6px 0; }
+  #status { font-size: 12px; color: gray; margin-top: 8px; }
 </style>
 </head>
 <body>
 
-<button onclick="buscarProjeto()">Carregar dados</button>
+<button onclick="selecionarPasta()">📁 Selecionar pasta</button>
+<button onclick="buscarProjeto()">🔄 Carregar dados</button>
+<div id="status"></div>
 <div id="resultado" style="margin-top:12px"></div>
 
 <script>
-function buscarProjeto() {
-    fetch('https://hyperexcursively-unspawned-ione.ngrok-free.dev/projeto')
+const BASE = 'https://hyperexcursively-unspawned-ione.ngrok-free.dev';
+
+function selecionarPasta() {
+    document.getElementById('status').innerText = 'Abrindo seletor de pasta no seu computador...';
+    document.getElementById('resultado').innerHTML = '';
+
+    fetch(`${BASE}/selecionar-pasta`)
         .then(response => response.json())
         .then(data => {
-            document.getElementById('resultado').innerHTML = `
-                <p>📁 <strong>Nome:</strong> ${data.nome_projeto}</p>
-                <p>📂 <strong>Caminho:</strong> ${data.caminho}</p>
-                <p>📅 <strong>Data:</strong> ${data.data_criacao}</p>
-            `;
+            if (data.erro) {
+                document.getElementById('status').innerText = data.erro;
+            } else {
+                document.getElementById('status').innerText = '✅ Pasta selecionada!';
+                mostrarDados(data);
+            }
         })
-        .catch(err => {
+        .catch(() => {
+            document.getElementById('status').innerText = '❌ Erro ao conectar com o servidor.';
+        });
+}
+
+function buscarProjeto() {
+    fetch(`${BASE}/projeto`)
+        .then(response => response.json())
+        .then(data => mostrarDados(data))
+        .catch(() => {
             document.getElementById('resultado').innerHTML = '<p style="color:red">Erro ao carregar dados.</p>';
         });
+}
+
+function mostrarDados(data) {
+    document.getElementById('resultado').innerHTML = `
+        <p>📁 <strong>Nome:</strong> ${data.nome_projeto}</p>
+        <p>📂 <strong>Caminho:</strong> ${data.caminho}</p>
+        <p>📅 <strong>Data:</strong> ${data.data_criacao}</p>
+    `;
 }
 </script>
 
