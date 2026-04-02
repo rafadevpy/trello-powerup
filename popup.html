@@ -1,13 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: sans-serif; padding: 16px; margin: 0; }
+  button { background: #1a7a3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+  p { font-size: 13px; margin: 6px 0; }
+</style>
+</head>
+<body>
+
+<button onclick="buscarProjeto()">Carregar dados</button>
+<div id="resultado" style="margin-top:12px"></div>
+
 <script>
 function buscarProjeto() {
-    const base = window.location.origin;
-    fetch(`${base}/projeto`)
+    fetch('https://hyperexcursively-unspawned-ione.ngrok-free.dev/projeto')
         .then(response => response.json())
         .then(data => {
             document.getElementById('resultado').innerHTML = `
-                <p><strong>Nome:</strong> ${data.nome_projeto}</p>
-                <p><strong>Caminho:</strong> ${data.caminho}</p>
-                <p><strong>Data:</strong> ${data.data_criacao}</p>
+                <p>📁 <strong>Nome:</strong> ${data.nome_projeto}</p>
+                <p>📂 <strong>Caminho:</strong> ${data.caminho}</p>
+                <p>📅 <strong>Data:</strong> ${data.data_criacao}</p>
             `;
         })
         .catch(err => {
@@ -15,3 +29,6 @@ function buscarProjeto() {
         });
 }
 </script>
+
+</body>
+</html>

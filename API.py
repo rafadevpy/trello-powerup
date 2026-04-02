@@ -31,5 +31,9 @@ def projeto_pdi():
 def popup():
     return send_file('popup.html')
 
+@app.route('/icon.svg')
+def icon():
+    return send_file('icon.svg', mimetype='image/svg+xml')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
